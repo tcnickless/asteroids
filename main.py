@@ -34,6 +34,8 @@ def main():
         for thing in drawable:
             thing.draw(screen)
         pygame.display.flip()
+
+        # adjust clock before proceeding
         dt = clock.tick(60) / 1000
 
 if __name__ == "__main__":
