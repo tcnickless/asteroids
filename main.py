@@ -1,6 +1,9 @@
 import pygame
+import sys
 from constants import *
 from player import *
+from asteroid import *
+from asteroidfield import *
 
 def main():
     # top level initialising
@@ -10,11 +13,17 @@ def main():
     # groups
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     # logic initialising
     dt = 0
+
     Player.containers = (updatable, drawable)
+    Asteroid.containers = (asteroids, updatable, drawable)
+    AsteroidField.containers = (updatable,)
+
     player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2)
+    asteroid_field = AsteroidField()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     print("Starting Asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
@@ -27,7 +36,12 @@ def main():
 
         # update logic
         for thing in updatable:
-            thing.update(dt)    
+            thing.update(dt)
+
+        for rock in asteroids:
+            if rock.collision_check(player):
+                print("Game over!")
+                sys.exit()
 
         # draw logic
         screen.fill("black")
